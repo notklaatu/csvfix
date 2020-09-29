@@ -5,24 +5,26 @@ else
 endif
 
 default:
-	@echo "use 'make win', 'make lin' or 'make mac'"
+	@echo "make linux:    build for Linux"
+	@echo "make windows:  build for Windows (untested)"
+	@echo "make macos:    build for Mac OS  (untested)
 
-win:
+windows:
 	cmd.exe /c "mkdirs.cmd"
-	cd alib && $(MAKE) win
-	cd csvfix && $(MAKE) win
+	cd alib && $(MAKE) windows
+	cd csvfix && $(MAKE) windows
 
-lin:
+linux:
+	find -type f -exec sed -i '/<windows.h>/d' {} \;
 	mkdir -p alib/obj alib/lib csvfix/obj csvfix/bin
-	cd alib; $(MAKE) lin
-	cd csvfix; $(MAKE) lin
+	cd alib; $(MAKE) linux
+	cd csvfix; $(MAKE) linux
 
-# build for mac on Mountain Lion
-# see http://groups.google.com/group/csvfix/browse_thread/thread/33ec3e5f157c16dd
-mac:
+macos:
+	find -type f -exec sed -i '/<windows.h>/d' {} \; || true
 	mkdir -p alib/obj alib/lib csvfix/obj csvfix/bin
-	cd alib; $(MAKE) lin CCTYPE=clang 
-	cd csvfix; $(MAKE) lin CCTYPE=clang 
+	cd alib; $(MAKE) linux CCTYPE=clang 
+	cd csvfix; $(MAKE) linux CCTYPE=clang 
 
 clean:
 	$(CLEAN)
